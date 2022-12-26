@@ -134,7 +134,7 @@ func (that *Serial) StartRecv() error {
 		}
 	}
 exit:
-	that.cacheData = make([]byte, that.cacheLength)
+	that.cacheData = make([]byte, 0)
 	return res
 }
 
