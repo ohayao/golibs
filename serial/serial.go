@@ -2,7 +2,6 @@ package serial
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"sync"
 	"time"
@@ -107,17 +106,19 @@ func (that *Serial) Write(data []byte) (int, error) {
 }
 
 // 开始从串口中接收数据
-func (that *Serial) StartRecv() {
+func (that *Serial) StartRecv() error {
 	//读取之前清空缓冲区数据
 	that.port.Flush()
 	readbuf := make([]byte, that.readLength)
 	last := time.Now()
+	var res error
 	for {
 		length, err := that.port.Read(readbuf)
 		if err == io.EOF || (err == nil && length == 0) {
 			continue
 		} else if err != nil {
-			fmt.Println(err)
+			res = err
+			goto exit
 		} else {
 			cur := time.Now()
 			diff := cur.Sub(last)
@@ -132,6 +133,9 @@ func (that *Serial) StartRecv() {
 			that.cacheLock.Unlock()
 		}
 	}
+exit:
+	that.cacheData = make([]byte, that.cacheLength)
+	return res
 }
 
 // 解析数据

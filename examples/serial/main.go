@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	s := serial.NewSerial("/dev/tty.usbserial-A907ENCL", 9600, 0x08, serial.ParityNone, serial.Stop1)
+	s := serial.NewSerial("/dev/tty.usbmodem0000207208101", 9600, 0x08, serial.ParityNone, serial.Stop1)
 	if err := s.Open(); err != nil {
 		panic(err)
 	}
