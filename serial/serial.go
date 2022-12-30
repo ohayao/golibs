@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/xluohome/serial"
+	another "go.bug.st/serial"
 )
 
 type (
@@ -53,6 +54,11 @@ func NewSerial(device string, baudrate int, size byte, parity Parity, stopbits S
 		cacheData:   make([]byte, 0),
 	}
 	return s
+}
+
+// 获取串口列表
+func GetPortsList() ([]string, error) {
+	return another.GetPortsList()
 }
 
 // 设置读取超时，以防止读取一半数据终端造成数据不完整
